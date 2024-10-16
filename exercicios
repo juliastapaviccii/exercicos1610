@@ -1,0 +1,71 @@
+-- 1.
+SELECT f.nome_funcionario, d.nome_departamento
+FROM funcionarios f
+INNER JOIN departamentos d ON f.id_departamento = d.id_departamento;
+                   
+-- 2. 
+SELECT p.nome_projeto, d.nome_departamento
+FROM projetos p                                          
+INNER JOIN departamentos d ON p.id_departamento = d.id_departamento;
+
+-- 3. 
+SELECT f.nome_funcionario, p.nome_projeto
+FROM funcionarios f                                       
+INNER JOIN funcionario_projeto fp ON f.id_funcionario = fp.id_funcionario                                                                                                                                                                                                              
+INNER JOIN projetos p ON fp.id_projeto = p.id_projeto
+WHERE f.id_departamento = (SELECT id_departamento FROM departamentos WHERE nome_departamento = 'Vendas');
+                                              
+-- 4. 
+SELECT f.nome_funcionario, p.nome_projeto
+FROM funcionarios f
+LEFT JOIN funcionario_projeto fp ON f.id_funcionario = fp.id_funcionario
+LEFT JOIN projetos p ON fp.id_projeto = p.id_projeto;
+
+-- 5. 
+SELECT d.nome_departamento, f.nome_funcionario
+FROM departamentos d
+LEFT JOIN funcionarios f ON d.id_departamento = f.id_departamento;
+
+-- 6. 
+SELECT p.nome_projeto, f.nome_funcionario
+FROM projetos p
+LEFT JOIN funcionario_projeto fp ON p.id_projeto = fp.id_projeto
+LEFT JOIN funcionarios f ON fp.id_funcionario = f.id_funcionario;
+
+-- 7. 
+SELECT f.nome_funcionario, p.nome_projeto
+FROM funcionario_projeto fp
+RIGHT JOIN funcionarios f ON fp.id_funcionario = f.id_funcionario
+RIGHT JOIN projetos p ON fp.id_projeto = p.id_projeto;
+
+-- 8. 
+SELECT d.nome_departamento, f.nome_funcionario
+FROM funcionarios f
+RIGHT JOIN departamentos d ON f.id_departamento = d.id_departamento
+WHERE f.id_funcionario IS NOT NULL;
+																																																																																																																																																																				
+-- 9. 
+SELECT p.nome_projeto, f.nome_funcionario
+FROM projetos p
+RIGHT JOIN funcionario_projeto fp ON p.id_projeto = fp.id_projeto
+RIGHT JOIN funcionarios f ON fp.id_funcionario = f.id_funcionario;
+
+
+-- 10. 
+SELECT f.nome_funcionario, p.nome_projeto
+FROM funcionarios f
+FULL OUTER JOIN funcionario_projeto fp ON f.id_funcionario = fp.id_funcionario
+FULL OUTER JOIN projetos p ON fp.id_projeto = p.id_projeto;
+
+-- 11. 
+SELECT d.nome_departamento, COUNT(f.id_funcionario) AS quantidade_funcionarios
+FROM departamentos d
+LEFT JOIN funcionarios f ON d.id_departamento = f.id_departamento
+GROUP BY d.nome_departamento
+
+UNION
+
+SELECT d.nome_departamento, COUNT(f.id_funcionario) AS quantidade_funcionarios
+FROM funcionarios f
+RIGHT JOIN departamentos d ON f.id_departamento = d.id_departamento
+GROUP BY f.id_departamento;
